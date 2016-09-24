@@ -19,6 +19,7 @@ The .tools file should be filled in as follows:
     Tool Name
     Tool Price Per Hour (in pennies, so 1p = 1, 1 pound = 100)
     Tool Description (as a single line of text)
+    ID (MUST be UNIQUE)
 
 
 
