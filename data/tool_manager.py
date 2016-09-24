@@ -1,7 +1,8 @@
 import json
 
 class RentalTool(object):
-    def __init__(self, name, descr, price, rented, pickupDate, returnDate):
+    def __init__(self, id, name, descr, price, rented, pickupDate, returnDate):
+        self.id = id
         self.name = name
         self.descr = descr
         self.price = price
@@ -16,5 +17,5 @@ class RentalTool(object):
 
 def loadTools(configFile):
     # This loads in the various tools from the config file
-    return [RentalTool("Wrench", "A wrench", 100, False, None, None).toJSON()]
+    return [RentalTool("WRENCH", "Wrench", "A wrench", 100, False, None, None).toJSON()]
 
