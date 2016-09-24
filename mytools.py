@@ -22,7 +22,7 @@ library_server_ip = '172.1.1.1'
 class RESTTool(Resource):
     def get(self):
         print "get request"
-        return {'tools': tools, 'date': dates, 'name': sharerName}
+        return {'tools': tools, 'date': dates, 'sharer_name': sharerName}
 
     def put(self):
         toolNo = request.form['toolNo']
