@@ -2,6 +2,7 @@ from flask import Flask, render_template
 from flask_restful import Resource, Api
 from requests import put, get
 
+import urllib2
 import payments.payment_manager
 import data.tool_manager
 
@@ -14,6 +15,7 @@ dates = []
 
 class RESTTool(Resource):
     def get(self):
+        print "get request"
         return {'tools': tools, 'date' : dates}
 
     def put(self):
@@ -49,21 +51,23 @@ def localLibraries():
     # Other IP addresses. For now, use local
 
     # For demo, setup an IP
-    return "<a href='/show/localhost'>172.16.14.105</a>"
+    return "<a href='/show/172.16.14.41'>172.16.14.105</a>"
 
 
 @app.route("/show/<ip>")
 def display(ip):
-    address = "http://" + ip + ":5000/myTools"
+    address = "http://" + ip + "/myTools"
     print address
 
-    data = get(address)
+    data = urllib2.urlopen(address)
 
     print data
-    return "Yay"
+
+    # TODO -- actually figure out how to load that
+    return "yay"
 
 if __name__ == '__main__':
     # Load the tools up from the config file
     tools = data.tool_manager.loadTools("./tools.conf")
 
-    app.run()
+    app.run(host='0.0.0.0', port=80)
