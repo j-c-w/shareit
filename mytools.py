@@ -13,10 +13,13 @@ api = Api(app)
 tools = []
 dates = []
 
+library_server_ip = '172.1.1.1'
+
+
 class RESTTool(Resource):
     def get(self):
         print "get request"
-        return {'tools': tools, 'date' : dates}
+        return {'tools': tools, 'date': dates}
 
     def put(self):
         toolNo = request.form['toolNo']
@@ -57,14 +60,9 @@ def localLibraries():
 @app.route("/show/<ip>")
 def display(ip):
     address = "http://" + ip + "/myTools"
-    print address
+    data = get(address).json()
 
-    data = urllib2.urlopen(address)
-
-    print data
-
-    # TODO -- actually figure out how to load that
-    return "yay"
+    return render_template('/html/item_list.html')
 
 if __name__ == '__main__':
     # Load the tools up from the config file
