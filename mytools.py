@@ -6,12 +6,15 @@ import urllib2
 import payments.payment_manager
 import data.tool_manager
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder="static")
 api = Api(app)
 
 
 tools = []
 dates = []
+with open(".name") as f:
+    sharerName = f.read()
+
 
 library_server_ip = '172.1.1.1'
 
@@ -19,7 +22,7 @@ library_server_ip = '172.1.1.1'
 class RESTTool(Resource):
     def get(self):
         print "get request"
-        return {'tools': tools, 'date': dates}
+        return {'tools': tools, 'date': dates, 'name': sharerName}
 
     def put(self):
         toolNo = request.form['toolNo']
@@ -61,11 +64,16 @@ def localLibraries():
 def display(ip):
     address = "http://" + ip + "/myTools"
     data = get(address).json()
+    print data
 
-    return render_template('/html/item_list.html')
+    items = data['tools']
+    dates = data['date']
+    name = data['sharer_name']
+
+    return render_template('html/item_list.html', items=items, name=name)
 
 if __name__ == '__main__':
     # Load the tools up from the config file
     tools = data.tool_manager.loadTools("./tools.conf")
 
-    app.run(host='0.0.0.0', port=80)
+    app.run(host='0.0.0.0', port=80, debug=True)
