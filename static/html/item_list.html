@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ name + "'s shares" }}</title>
+    <link type="text/css" rel="stylesheet" href="{{url_for('static', filename='stylesheets/main.css')}}"/>
+</head>
+<body>
+    <h1>{{ name + "'s shares" }}</h1>
+    <hr/>
+    <!-- idea is to have a functional search feature
+            here in the server -->
+    <input type="text" name="item_search" placeholder="Search"/>
+    <!-- TODO -- implement that search feature with JS -->
+    <hr/>
+    {% for item in items %}
+        <div class="item_container">
+            <h2>Name: {{item['name']}}</h2>
+            <p>Description: {{item['descr']}}</p>
+            <p>Price (pence per hour): {{item['price']}}</p>
+            {% if not item['rented'] %}
+                <h3>Available</h3>
+                <a href='/rent/{{(item['id'])}}'>Rent</a>
+            {% else %}
+                <h3>Not Available</h3>
+            {% endif %}
+        </div>
+    {% endfor %}
+</body>
+</html>
