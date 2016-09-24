@@ -2,6 +2,7 @@ from flask import Flask, render_template
 from flask_restful import Resource, Api
 from requests import put, get
 
+import json
 import urllib2
 import payments.payment_manager
 import data.tool_manager
@@ -64,13 +65,19 @@ def localLibraries():
 def display(ip):
     address = "http://" + ip + "/myTools"
     data = get(address).json()
-    print data
 
     items = data['tools']
     dates = data['date']
     name = data['sharer_name']
 
-    return render_template('html/item_list.html', items=items, name=name)
+    # Now we have to convert all the elements
+    # in items to JSON objects before they are
+    # passed. They come in as strings.
+    json_items = []
+    for item in items:
+        json_items.append(json.loads(item))
+
+    return render_template('html/item_list.html', items=json_items, name=name)
 
 if __name__ == '__main__':
     # Load the tools up from the config file
