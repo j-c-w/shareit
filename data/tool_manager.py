@@ -1,5 +1,7 @@
 import json
 
+tools = []
+
 class RentalTool(object):
     def __init__(self, id, name, descr, price, rented, pickupDate, returnDate):
         self.id = id
@@ -17,7 +19,8 @@ class RentalTool(object):
 
 def loadTools(configFile=".tools"):
     # This loads in the various tools from the config file
-    tools = []
+    global tools
+
     with open(configFile) as f:
         lines = f.readlines()
 
@@ -42,4 +45,10 @@ def loadTools(configFile=".tools"):
                       " standard."
     return tools
 
+def item_from_id(item_id):
+    for item in tools:
+        if item['id'] == item_id:
+            return item
+
+    return None
 
