@@ -100,7 +100,7 @@ def display(ip):
     for item in items:
         json_items.append(json.loads(item))
 
-    return render_template('html/item_list.html', items=json_items, name=name)
+    return render_template('html/item_list.html', items=json_items, name=name, ip=ip)
 
 
 @app.route("/auth_loan_out/<transaction_id>")
@@ -146,7 +146,7 @@ gives them a link they can follow once they
 have completed the transaction. This
 link does the payment processing. """
 @app.route("/rent/<ip>/<id>")
-def rent(ip, item_id):
+def rent(ip, id):
     # The first step is to talk to the other server
     # to confirm the rent. Then, take back the name
     # and description of the item and use these
@@ -154,7 +154,7 @@ def rent(ip, item_id):
     destinationAddress = "http://" + ip + "/rent_request"
 
     data_sent = {'transaction_id': generate_uuid(),
-                 'item_id': item_id,
+                 'item_id': id,
                  'sharerName': sharerName,
                  'loan_out_ip': ip}
 
@@ -165,7 +165,7 @@ def rent(ip, item_id):
     own_ip = response['loaner_ip']
     amount = response['amount']
 
-    confirmation_link = payments.payment_manager.generate_loaner_link(own_ip, ip, item_id, amount)
+    confirmation_link = payments.payment_manager.generate_loaner_link(own_ip, ip, id, amount)
 
     # NOTE: the item_id here does not correspond
     # to an ID on this server.
@@ -173,13 +173,13 @@ def rent(ip, item_id):
     toAddr = useremail
 
     email = MIMEMultipart("alternative")
-    email['Subject'] = "Sharing " + item_id
+    email['Subject'] = "Sharing " + id
     email['From'] = fromAddr
     email['To'] = useremail
 
     text = MIMEText("""
         This is to confirm your share request for """ +
-                      item_id + """. To collect this
+                    id + """. To collect this
                       item, go to """ + destination_postal_address +
                       """ to pick it up :)
                       Once you have picked it up, click on the below
@@ -189,7 +189,7 @@ def rent(ip, item_id):
     email.attach(text)
 
     with smtplib.SMTP('localhost') as server:
-        server.sendmail(email)
+        server.sendmail(email, fromAddr, toAddr)
 
     return "Confirmation emails sent! Go to " + \
             destination_postal_address + """ to
@@ -208,6 +208,7 @@ class RentConfirmation(Resource):
 
 class RentRequest(Resource):
     def put(self):
+        print "rent request received"
         # We get the item_id and are expected
         # to return most of the  item.
 
@@ -218,6 +219,7 @@ class RentRequest(Resource):
 
         other_ip = request.environ['REMOTE_ADDR']
 
+        print "data extracted"
         # Generate the confirmation link and
         # send it to yourself.
 
@@ -245,17 +247,15 @@ class RentRequest(Resource):
             this platform will support a mediated form
             or renegotiation wrt the value of the tool
             """, 'text')
-        
+
         email.attach(text)
 
-        with smtplib.SMTP('localhost') as server:
-            server.sendmail(email)
-
-        email.set_content()
+        print "email created"
 
         with smtplib.SMTP('localhost') as server:
-            server.send_message(email)
+            server.sendmail(email, fromAddr, toAddr)
 
+        print "email sent"
 
         # Now return the data that is needed on
         # the other end
@@ -264,8 +264,8 @@ class RentRequest(Resource):
                 'loaner_ip': other_ip,
                 'amount': item_amount}
 
-api.add_resource(RentRequest)
-api.add_resource(RentConfirmation)
+api.add_resource(RentRequest, '/rent_request')
+api.add_resource(RentConfirmation, '/auth_loaner')
 
 def update_nameserver():
     global library_id

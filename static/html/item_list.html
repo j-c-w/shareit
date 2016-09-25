@@ -20,7 +20,7 @@
             <p>Price (pence per hour): {{item['price']}}</p>
             {% if not item['rented'] %}
                 <h3>Available</h3>
-                <a href='/rent/{{(item['id'])}}'>Rent</a>
+                <a href="/rent/{{ip + '/' + (item['id'])}}">Rent</a>
             {% else %}
                 <h3>Not Available</h3>
             {% endif %}
