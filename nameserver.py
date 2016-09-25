@@ -39,6 +39,9 @@ def all_ips():
 
 
 class ListFetch(Resource):
+    def get(self):
+        pass
+    
     def put(self):
         # Returns a JSON list of all the IPs
         # todo -- take the address of the
@@ -53,6 +56,9 @@ class ListFetch(Resource):
 
 
 class ListSet(Resource):
+    def get(self):
+        pass
+
     def put(self):
         address = request.form['address']
         ip = request.environ['REMOTE_ADDR']
