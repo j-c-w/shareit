@@ -62,7 +62,7 @@ api.add_resource(RESTTool, '/myTools')
 def localLibraries():
     # Lookup the list of IP addresses from the name server:
     nameserver_address = "http://" + nameserver_ip + "/getLibraries"
-    ips = put(nameserver_address, {'address': postal_address, 'ip': nameserver_ip})['ips']
+    ips = put(nameserver_address, {'address': postal_address, 'ip': nameserver_ip}).json()['ips']
     print ips
 
     return render_template("html/ip_list.html", ips=ips)
