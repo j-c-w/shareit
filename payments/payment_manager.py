@@ -26,7 +26,7 @@ def generate_loan_outter_link(transaction_id, own_ip, dest_ip,
                      'remote_conf': False}
     pending_payments_in.append(payment_state)
 
-    return "http://" + own_ip + "/auth_loan_out/" + transaction_id
+    return "http://" + own_ip + "/auth_loan_out/" + str(transaction_id)
 
 
 def generate_loaner_link(transaction_id, own_ip, dest_ip, item_id, amount):
@@ -46,7 +46,7 @@ def generate_loaner_link(transaction_id, own_ip, dest_ip, item_id, amount):
                      'amount': amount}
     pending_payments_out.append(payment_state)
 
-    return "http://" + own_ip + "/auth_loaner/" + transaction_id
+    return "http://" + own_ip + "/auth_loaner/" + str(transaction_id)
 
 
 def has_remote_conf(transaction_id):

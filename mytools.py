@@ -193,10 +193,11 @@ def rent(ip, id):
 
     email.attach(text)
 
-    with smtplib.SMTP(host='smtp.gmail.com',port=587) as server:
-        server.starttls()
-        server.login('sharelet134', 'sharelet9999')
-        server.sendmail(fromAddress, toAddr, email.as_string())
+    server = smtplib.SMTP(host='smtp.gmail.com',port=587)
+    server.starttls()
+    server.login('sharelet134', 'sharelet9999')
+    server.sendmail(fromAddress, toAddr, email.as_string())
+    server.quit()
 
     return "Confirmation emails sent! Go to " + \
             destination_postal_address + """ to
