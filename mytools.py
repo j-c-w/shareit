@@ -13,6 +13,8 @@ api = Api(app)
 
 tools = []
 dates = []
+library_id = None
+
 with open(".name") as f:
     sharerName = f.read()
 
@@ -90,14 +92,14 @@ def update_nameserver():
     # todo -- make this global
     address = "http://" + nameserver_ip + "/ping"
 
-    data = {'address': postal_address}
+    data = {'address': postal_address, 'id': library_id}
 
     try:
-        put(address, data)
+        library_id = put(address, data)
     except Exception:
         print "Error updating nameserver, check address of " \
               "namesever or internet connection"
-        
+
     # Set this on a loop to call itself every 6 seconds
     threading.Timer(6.0, update_nameserver).start()
 
