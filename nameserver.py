@@ -64,6 +64,9 @@ class ListSet(Resource):
         else:
             id = generate_id()
 
+        print "ip " + ip
+        print "address " + address
+
         # Now, create an entry in the list
         ips.update({'ip': ip, 'address': address,
                     'id': id})
