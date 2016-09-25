@@ -99,7 +99,7 @@ def update_nameserver():
             'name': sharerName}
 
     try:
-        library_id = put(address, data).json()
+        library_id = put(address, data).json()['id']
     except Exception:
         print "Error updating nameserver, check address of " \
               "namesever or internet connection"
