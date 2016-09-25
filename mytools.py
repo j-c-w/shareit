@@ -111,7 +111,7 @@ def update_nameserver():
 
 if __name__ == '__main__':
     # Load the tools up from the config file
-    tools = data.tool_manager.loadTools("./tools.conf")
+    tools = data.tool_manager.loadTools()
 
     # And start pinging the host server
     update_nameserver()
