@@ -2,9 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Nearby Libraries</title>
 </head>
 <body>
+    <h2>Nearby Libraries</h2>
 
+    {% for (ip, name) in ips %}
+        <a href='{{"/show/" + ip}}'>{{name}}</a><br/>
+    {% endfor %}
 </body>
 </html>
