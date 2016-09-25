@@ -8,11 +8,15 @@ To do this, you need to fill in the following files:
     .addr
     .name
     .tools
+    .email
 
 The name and addr files should be filled in
 with your name and address (which should be the
 only things in the files). See the files's current
 contents for examples.
+
+The .email file should be filled in with *your*
+email address. This is crucial for security
 
 The .tools file should be filled in as follows:
 
