@@ -40,6 +40,7 @@ def all_ips():
 
 class ListFetch(Resource):
     def put(self):
+        print "list fetch"
         # Returns a JSON list of all the IPs
         # todo -- take the address of the
         # sender and calculate the ones within
@@ -54,6 +55,7 @@ class ListFetch(Resource):
 
 class ListSet(Resource):
     def put(self):
+        print "list update"
         address = request.form['address']
         ip = request.environ['REMOTE_ADDR']
 
