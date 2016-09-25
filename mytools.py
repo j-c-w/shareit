@@ -97,7 +97,7 @@ def update_nameserver():
     data = {'address': postal_address, 'id': library_id}
 
     try:
-        library_id = put(address, data)
+        library_id = put(address, data)['id']
     except Exception:
         print "Error updating nameserver, check address of " \
               "namesever or internet connection"
