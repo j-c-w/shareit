@@ -191,7 +191,7 @@ def rent(ip, id):
 
     email.attach(text)
 
-    with smtplib.SMTP('localhost') as server:
+    with smtplib.SMTP(host='smtp.gmail.com',port=587) as server:
         server.sendmail(email, fromAddr, toAddr)
 
     return "Confirmation emails sent! Go to " + \
@@ -258,7 +258,7 @@ class RentRequest(Resource):
 
         print "email created"
 
-        server = smtplib.SMTP('localhost')
+        server = smtplib.SMTP(host='smtp.gmail.com', port=587)
         server.sendmail(email, fromAddr, toAddr)
         server.quit()
 
