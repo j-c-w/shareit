@@ -17,7 +17,7 @@ def make_payment(username_from, username_to, amount):
     pass
 
 
-def generate_loan_outter_link(self, transaction_id, own_ip, dest_ip,
+def generate_loan_outter_link(transaction_id, own_ip, dest_ip,
                               item_id, amount):
     payment_state = {'transaction_id': transaction_id,
                      'auth_token': None,
@@ -29,7 +29,7 @@ def generate_loan_outter_link(self, transaction_id, own_ip, dest_ip,
     return "http://" + own_ip + "/auth_loan_out/" + transaction_id
 
 
-def generate_loaner_link(self, transaction_id, own_ip, dest_ip, item_id, amount):
+def generate_loaner_link(transaction_id, own_ip, dest_ip, item_id, amount):
     # The idea is to send the auth token to the
     # other device when that link is scanned.
     # Then, accept payment when presented with

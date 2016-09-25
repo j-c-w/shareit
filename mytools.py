@@ -151,6 +151,9 @@ def rent(ip, id):
     # to confirm the rent. Then, take back the name
     # and description of the item and use these
     # to craft an email.
+    print "Item ID:" + id
+
+
     destinationAddress = "http://" + ip + "/rent_request"
 
     data_sent = {'transaction_id': generate_uuid(),
@@ -219,7 +222,7 @@ class RentRequest(Resource):
 
         other_ip = request.environ['REMOTE_ADDR']
 
-        print "data extracted"
+        print "data extracted", item_id
         # Generate the confirmation link and
         # send it to yourself.
 
