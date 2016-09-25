@@ -3,7 +3,7 @@ from flask_restful import Resource, Api
 from requests import put, get
 
 import json
-import urllib2
+import threading
 import payments.payment_manager
 import data.tool_manager
 
@@ -16,8 +16,12 @@ dates = []
 with open(".name") as f:
     sharerName = f.read()
 
+with open(".addr") as f:
+    postal_address = f.read()
 
-library_server_ip = '172.1.1.1'
+
+with open(".nameserverIP") as f:
+    nameserver_ip = f.read()
 
 
 class RESTTool(Resource):
@@ -79,8 +83,26 @@ def display(ip):
 
     return render_template('html/item_list.html', items=json_items, name=name)
 
+def update_nameserver():
+    # Get the IP address of this server,
+    # Then forward it to the nameserver.
+    # In this instance, go local
+    # todo -- make this global
+    address = "http://" + nameserver_ip + "/ping"
+
+    data = {'address': postal_address}
+
+    put(address, data)
+
+    # Set this on a loop to call itself every 6 seconds
+    threading.Timer(6.0, update_nameserver).start()
+
+
 if __name__ == '__main__':
     # Load the tools up from the config file
     tools = data.tool_manager.loadTools("./tools.conf")
+
+    # And start pinging the host server
+    update_nameserver()
 
     app.run(host='0.0.0.0', port=80, debug=True)

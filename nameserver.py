@@ -54,8 +54,8 @@ class ListFetch(Resource):
 
 class ListSet(Resource):
     def put(self):
-        ip = request.form['data']
         address = request.form['address']
+        ip = request.environ['REMOTE_ADDR']
 
         # The ID is a unique way for this
         #
