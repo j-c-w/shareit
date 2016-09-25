@@ -59,15 +59,16 @@ class ListSet(Resource):
         address = request.form['address']
         ip = request.environ['REMOTE_ADDR']
 
+        print "ip " + ip
+        print "address " + address
+
         # The ID is a unique way for this
         #
-        if request.form['id']:
+        if 'id' in request:
             id = request.form['id']
         else:
             id = generate_id()
 
-        print "ip " + ip
-        print "address " + address
 
         # Now, create an entry in the list
         ips.update({'ip': ip, 'address': address,
