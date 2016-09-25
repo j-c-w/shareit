@@ -172,7 +172,7 @@ def rent(ip, id):
 
     # NOTE: the item_id here does not correspond
     # to an ID on this server.
-    fromAddr = "woodruff.jackson@gmail.com"
+    fromAddr = "JSharelet <woodruff.jackson@gmail.com>"
     toAddr = useremail
 
     email = MIMEMultipart("alternative")
@@ -238,7 +238,7 @@ class RentRequest(Resource):
 
         confirmation_link = payments.payment_manager.generate_loan_outter_link(transaction_id, own_ip, other_ip, item_id, item_amount)
 
-        fromAddr = "woodruff.jackson@gmail.com"
+        fromAddr = "JSharelet <woodruff.jackson@gmail.com>"
         toAddr = useremail
 
         email = MIMEMultipart("alternative")
