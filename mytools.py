@@ -85,7 +85,9 @@ def display(ip):
 
     return render_template('html/item_list.html', items=json_items, name=name)
 
+
 def update_nameserver():
+    global library_id
     # Get the IP address of this server,
     # Then forward it to the nameserver.
     # In this instance, go local
