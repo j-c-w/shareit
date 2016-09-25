@@ -15,7 +15,31 @@ class RentalTool(object):
                           o.__dict__, sort_keys=True,
                           indent=4)
 
-def loadTools(configFile):
+def loadTools(configFile=".tools"):
     # This loads in the various tools from the config file
-    return [RentalTool("WRENCH", "Wrench", "A wrench", 100, False, None, None).toJSON()]
+    tools = []
+    with open(configFile) as f:
+        lines = f.readlines()
+
+        lines_index = 0
+
+        while lines_index < len(lines):
+            try:
+                name = lines[lines_index]
+                price = lines[lines_index + 1]
+                description = lines[lines_index + 2]
+                id = lines[lines_index + 3]
+
+                tools.append(RentalTool(id, name, description, price, False, None, None))
+
+                lines_index += 5
+            except IndexError:
+                # Likely just an error with
+                # how the configuration file
+                # was written
+                print "Unexpected end to item config" \
+                      " file. Ensure it follows the correct" \
+                      " standard."
+    return tools
+
 
