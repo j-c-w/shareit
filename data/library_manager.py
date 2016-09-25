@@ -29,7 +29,7 @@ class LibraryManager(object):
         message['refreshTime'] = time.time()
         new_item = True
 
-        for item, index in enumerate(self.data):
+        for index, item in enumerate(self.data):
             if item['id'] == message_id:
                 new_item = False
                 # Then replace the item here
@@ -45,7 +45,7 @@ class LibraryManager(object):
     def _cleanup(self):
         current_time = time.time()
 
-        for item, index in enumerate(self.data):
+        for index, item in enumerate(self.data):
             if current_time - item['refreshTime'] > TTL:
                 # delete the item and remove it:
                 del self.data[index]
