@@ -1,9 +1,8 @@
 from flask import Flask, render_template, request
 from flask_restful import Resource, Api
 from requests import put, get
-from email.message import EmailMessage
-from email.headerregistry import Address
-from email.utils import make_msgid
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
 import json
 import threading
@@ -170,23 +169,27 @@ def rent(ip, item_id):
 
     # NOTE: the item_id here does not correspond
     # to an ID on this server.
+    fromAddr = "shareit@shareit.com"
+    toAddr = useremail
 
-    email = EmailMessage()
+    email = MIMEMultipart("alternative")
     email['Subject'] = "Sharing " + item_id
-    email['From'] = Address("Shareit", "Shareit", "shareit@shareit.com")
-    email['To'] = Address("", "", useremail)
+    email['From'] = fromAddr
+    email['To'] = useremail
 
-    email.set_content("""
+    text = MIMEText("""
         This is to confirm your share request for """ +
                       item_id + """. To collect this
                       item, go to """ + destination_postal_address +
                       """ to pick it up :)
                       Once you have picked it up, click on the below
                       link to confirm your payment for the """ + item_name +
-                      "\n\n" + confirmation_link)
+                      "\n\n" + confirmation_link, 'plain')
+
+    email.attach(text)
 
     with smtplib.SMTP('localhost') as server:
-        server.send_message(email)
+        server.sendmail(email)
 
     return "Confirmation emails sent! Go to " + \
             destination_postal_address + """ to
@@ -225,21 +228,30 @@ class RentRequest(Resource):
 
         confirmation_link = payments.payment_manager.generate_loan_outter_link(transaction_id, own_ip, other_ip, item_id, item_amount)
 
-        email = EmailMessage()
-        email['Subject'] = "Sharing " + item_id
-        email['From'] = Address("Shareit", "Shareit", "shareit@shareit.com")
-        email['To'] = Address("", "", useremail)
+        fromAddr = "shareit@shareit.com"
+        toAddr = useremail
 
-        email.set_content("""There's been a request
-        put in for your tool """ + item_name + """.
-        """ + other_name + """ is coming to collect it.
-        """ + """ The following is a link that you
-        should click only when they have returned the
-        tool in satisfactory condition to confirm
-        the payment (before the payment is made,
-        this platform will support a mediated form
-        or renegotiation wrt the value of the tool
-        """)
+        email = MIMEMultipart("alternative")
+        email['Subject'] = "Sharing " + item_id
+        email['From'] = fromAddr
+        email['To'] = useremail
+        text = MIMEText("""There's been a request
+            put in for your tool """ + item_name + """.
+            """ + other_name + """ is coming to collect it.
+            """ + """ The following is a link that you
+            should click only when they have returned the
+            tool in satisfactory condition to confirm
+            the payment (before the payment is made,
+            this platform will support a mediated form
+            or renegotiation wrt the value of the tool
+            """, 'text')
+        
+        email.attach(text)
+
+        with smtplib.SMTP('localhost') as server:
+            server.sendmail(email)
+
+        email.set_content()
 
         with smtplib.SMTP('localhost') as server:
             server.send_message(email)
