@@ -195,7 +195,7 @@ def rent(ip, id):
     with smtplib.SMTP(host='smtp.gmail.com',port=587) as server:
         server.starttls()
         server.login('sharelet134', 'sharelet9999')
-        server.sendmail(email, fromAddress, toAddr)
+        server.sendmail(fromAddress, email, toAddr)
 
     return "Confirmation emails sent! Go to " + \
             destination_postal_address + """ to
@@ -263,7 +263,7 @@ class RentRequest(Resource):
         server = smtplib.SMTP(host='smtp.gmail.com', port=587)
         server.starttls()
         server.login('sharelet134', 'sharelet9999')
-        server.sendmail(email, fromAddress, toAddr)
+        server.sendmail(fromAddress, useremail, toAddr)
         server.quit()
 
         print "email sent"
