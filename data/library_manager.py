@@ -26,11 +26,18 @@ class LibraryManager(object):
     'id' defined"""
     def update(self, message):
         message_id = message['id']
+        message['refreshTime'] = time.time()
+        new_item = True
+
         for item, index in enumerate(self.data):
             if item['id'] == message_id:
+                new_item = False
                 # Then replace the item here
-                message['refreshTime'] = time.time()
                 self.data[index] = message
+
+        if new_item:
+            # Then just add to the list
+            self.data.append(message)
 
     """ This goes through the data list and
     clears out all the data with timestamps
