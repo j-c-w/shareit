@@ -48,7 +48,7 @@ def loadTools(configFile=".tools"):
 def item_from_id(item_id):
     for item in tools:
         # That is going to be slow
-        item = json.load(item)
+        item = json.loads(item)
         if item['id'] == item_id:
             return item
 
