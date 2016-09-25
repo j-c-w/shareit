@@ -30,7 +30,7 @@ def loadTools(configFile=".tools"):
                 description = lines[lines_index + 2]
                 id = lines[lines_index + 3]
 
-                tools.append(RentalTool(id, name, description, price, False, None, None))
+                tools.append(RentalTool(id, name, description, price, False, None, None).toJSON())
 
                 lines_index += 5
             except IndexError:

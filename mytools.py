@@ -71,7 +71,15 @@ def localLibraries():
 @app.route("/show/<ip>")
 def display(ip):
     address = "http://" + ip + "/myTools"
-    data = get(address).json()
+    try:
+        data = get(address).json()
+    except ValueError:
+        # The host didn't return reasonable data
+        # Just show the user an error message
+        return "Whoops! We've had an issue connecting " \
+               "to this library :( If you know this person, " \
+                "try to get them to restart their server. " \
+                "Otherwise, try again in a little while. "
 
     items = data['tools']
     dates = data['date']
