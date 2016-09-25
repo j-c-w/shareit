@@ -57,6 +57,7 @@ class ListSet(Resource):
     def put(self):
         print "list update"
         address = request.form['address']
+        name = request.form['name']
         ip = request.environ['REMOTE_ADDR']
 
         print "ip " + ip
@@ -72,7 +73,7 @@ class ListSet(Resource):
 
         # Now, create an entry in the list
         ips.update({'ip': ip, 'address': address,
-                    'id': id})
+                    'id': id, 'name': name})
 
         # Return the id as confirmation
         return {'id': id}

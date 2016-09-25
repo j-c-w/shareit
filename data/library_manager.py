@@ -59,7 +59,7 @@ class LibraryManager(object):
         ips = []
 
         for item in self.data:
-            ips.append(item['ip'])
+            ips.append((item['ip'], item['name']))
 
         return ips
 

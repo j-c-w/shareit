@@ -60,11 +60,12 @@ api.add_resource(RESTTool, '/myTools')
 
 @app.route("/")
 def localLibraries():
-    # TODO -- use the central server to lookup
-    # Other IP addresses. For now, use local
+    # Lookup the list of IP addresses from the name server:
+    nameserver_address = json.loads("http://" + nameserver_ip + "/getLibraries")
+    ips = put(nameserver_address, {'address': postal_address})
+    print ips
 
-    # For demo, setup an IP
-    return "<a href='/show/172.16.14.41'>172.16.14.105</a>"
+    return render_template("html/ip_list.html", ips=[('122.2.2.2', 'Jackson')])
 
 
 @app.route("/show/<ip>")
@@ -94,14 +95,16 @@ def update_nameserver():
     # todo -- make this global
     address = "http://" + nameserver_ip + "/ping"
 
-    data = {'address': postal_address, 'id': library_id}
+    data = {'address': postal_address, 'id': library_id,
+            'name': sharerName}
 
     try:
-        library_id = put(address, data)['id']
+        library_id = put(address, data).json()
     except Exception:
         print "Error updating nameserver, check address of " \
               "namesever or internet connection"
 
+    print library_id
     # Set this on a loop to call itself every 6 seconds
     threading.Timer(6.0, update_nameserver).start()
 
