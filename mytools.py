@@ -258,8 +258,9 @@ class RentRequest(Resource):
 
         print "email created"
 
-        with smtplib.SMTP('localhost') as server:
-            server.sendmail(email, fromAddr, toAddr)
+        server = smtplib.SMTP('localhost')
+        server.sendmail(email, fromAddr, toAddr)
+        server.quit()
 
         print "email sent"
 
