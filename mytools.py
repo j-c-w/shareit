@@ -157,8 +157,9 @@ def rent(ip, id):
 
 
     destinationAddress = "http://" + ip + "/rent_request"
+    transaction_id = generate_uuid()
 
-    data_sent = {'transaction_id': generate_uuid(),
+    data_sent = {'transaction_id': transaction_id,
                  'item_id': id,
                  'sharerName': sharerName,
                  'loan_out_ip': ip}
@@ -170,7 +171,7 @@ def rent(ip, id):
     own_ip = response['loaner_ip']
     amount = response['amount']
 
-    confirmation_link = payments.payment_manager.generate_loaner_link(own_ip, ip, id, amount)
+    confirmation_link = payments.payment_manager.generate_loaner_link(transaction_id, own_ip, ip, id, amount)
 
     # NOTE: the item_id here does not correspond
     # to an ID on this server.
@@ -195,7 +196,7 @@ def rent(ip, id):
     with smtplib.SMTP(host='smtp.gmail.com',port=587) as server:
         server.starttls()
         server.login('sharelet134', 'sharelet9999')
-        server.sendmail(fromAddress, toAddr, email)
+        server.sendmail(fromAddress, toAddr, email.as_string())
 
     return "Confirmation emails sent! Go to " + \
             destination_postal_address + """ to
@@ -263,7 +264,7 @@ class RentRequest(Resource):
         server = smtplib.SMTP(host='smtp.gmail.com', port=587)
         server.starttls()
         server.login('sharelet134', 'sharelet9999')
-        server.sendmail(fromAddress, toAddr, email)
+        server.sendmail(fromAddress, toAddr, email.as_string())
         server.quit()
 
         print "email sent"
