@@ -20,6 +20,8 @@ tools = []
 dates = []
 library_id = None
 
+fromAddress = "Jackson Woodruff <woodruff.jackson@gmail.com>"
+
 with open(".name") as f:
     sharerName = f.read()
 
@@ -31,7 +33,7 @@ with open(".nameserverIP") as f:
     nameserver_ip = f.read()
 
 with open(".email") as f:
-    useremail = f.read()
+    useremail = "You <" + f.read() + ">"
 
 
 class RESTTool(Resource):
@@ -172,12 +174,11 @@ def rent(ip, id):
 
     # NOTE: the item_id here does not correspond
     # to an ID on this server.
-    fromAddr = "JSharelet <woodruff.jackson@gmail.com>"
     toAddr = useremail
 
     email = MIMEMultipart("alternative")
     email['Subject'] = "Sharing " + id
-    email['From'] = fromAddr
+    email['From'] = fromAddress
     email['To'] = useremail
 
     text = MIMEText("""
@@ -194,7 +195,7 @@ def rent(ip, id):
     with smtplib.SMTP(host='smtp.gmail.com',port=587) as server:
         server.starttls()
         server.login('sharelet134', 'sharelet9999')
-        server.sendmail(email, fromAddr, toAddr)
+        server.sendmail(email, fromAddress, toAddr)
 
     return "Confirmation emails sent! Go to " + \
             destination_postal_address + """ to
@@ -238,12 +239,11 @@ class RentRequest(Resource):
 
         confirmation_link = payments.payment_manager.generate_loan_outter_link(transaction_id, own_ip, other_ip, item_id, item_amount)
 
-        fromAddr = "JSharelet <woodruff.jackson@gmail.com>"
         toAddr = useremail
 
         email = MIMEMultipart("alternative")
         email['Subject'] = "Sharing " + item_id
-        email['From'] = fromAddr
+        email['From'] = fromAddress
         email['To'] = useremail
         text = MIMEText("""There's been a request
             put in for your tool """ + item_name + """.
@@ -263,7 +263,7 @@ class RentRequest(Resource):
         server = smtplib.SMTP(host='smtp.gmail.com', port=587)
         server.starttls()
         server.login('sharelet134', 'sharelet9999')
-        server.sendmail(email, fromAddr, toAddr)
+        server.sendmail(email, fromAddress, toAddr)
         server.quit()
 
         print "email sent"
