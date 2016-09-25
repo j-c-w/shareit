@@ -64,7 +64,7 @@ class ListSet(Resource):
 
         # The ID is a unique way for this
         #
-        if request.form['id'] == None:
+        if 'id' in request:
             id = request.form['id']
         else:
             id = generate_id()
