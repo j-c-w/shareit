@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from flask_restful import Resource, Api
 from requests import put, get
 
@@ -92,8 +92,12 @@ def update_nameserver():
 
     data = {'address': postal_address}
 
-    put(address, data)
-
+    try:
+        put(address, data)
+    except Exception:
+        print "Error updating nameserver, check address of " \
+              "namesever or internet connection"
+        
     # Set this on a loop to call itself every 6 seconds
     threading.Timer(6.0, update_nameserver).start()
 
