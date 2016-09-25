@@ -53,13 +53,14 @@ class LibraryManager(object):
         # Then reschedule itself
         threading.Timer(30.0, self._cleanup).start()
 
-    def getIPsNear(self, address):
+    def getIPsNear(self, address, excluding=None):
         # todo -- implement a search for nearby addresses
 
         ips = []
 
         for item in self.data:
-            ips.append((item['ip'], item['name']))
+            if excluding != item['ip']:
+                ips.append((item['ip'], item['name']))
 
         return ips
 

@@ -47,10 +47,11 @@ class ListFetch(Resource):
         # range
 
         address = request.form['address']
+        ip_address = request.form['ip']
 
         # return just the ip addresses for
         # the sake of security
-        return {'ips': ips.getIPsNear(address)}
+        return {'ips': ips.getIPsNear(address, excluding=ip_address)}
 
 
 class ListSet(Resource):

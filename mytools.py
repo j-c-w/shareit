@@ -62,10 +62,10 @@ api.add_resource(RESTTool, '/myTools')
 def localLibraries():
     # Lookup the list of IP addresses from the name server:
     nameserver_address = "http://" + nameserver_ip + "/getLibraries"
-    ips = put(nameserver_address, {'address': postal_address})
+    ips = put(nameserver_address, {'address': postal_address, 'ip': nameserver_ip})['ips']
     print ips
 
-    return render_template("html/ip_list.html", ips=[('122.2.2.2', 'Jackson')])
+    return render_template("html/ip_list.html", ips=ips)
 
 
 @app.route("/show/<ip>")
