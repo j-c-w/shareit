@@ -49,8 +49,11 @@ def item_from_id(item_id):
     for item in tools:
         # That is going to be slow
         item = json.loads(item)
-        if item['id'] == item_id:
+	print item['id'] + item_id
+        if str(item['id'][:-1]) == str(item_id):
+	    print "Item found"
             return item
 
+    print "no item found"
     return None
 

@@ -222,7 +222,10 @@ class RentRequest(Resource):
 
         other_ip = request.environ['REMOTE_ADDR']
 
-        print "data extracted", item_id
+        print item_id
+        print transaction_id
+        print other_name
+        print own_ip
         # Generate the confirmation link and
         # send it to yourself.
 
