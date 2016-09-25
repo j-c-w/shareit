@@ -68,7 +68,7 @@ class ListSet(Resource):
         if 'id' in request.form:
             id = request.form['id']
         else:
-            id = generate_id()
+            id = generate_id().int
 
 
         # Now, create an entry in the list
